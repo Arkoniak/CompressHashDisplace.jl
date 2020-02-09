@@ -4,7 +4,7 @@
 
 # Calculates a distinct hash function for a given string. Each value of the
 # integer d results in a different hash value.
-function fnv_hash(s, d::UInt32 = 0x811c9dc5)
+@inline function fnv_hash(s, d::UInt32 = 0x811c9dc5)
 
     # Use the FNV algorithm from http://isthe.com/chongo/tech/comp/fnv/
     for c in s
@@ -14,6 +14,9 @@ function fnv_hash(s, d::UInt32 = 0x811c9dc5)
 
     return d
 end
+
+fnv_hash(s::String) = fnv_hash(codeunits(s))
+fnv_hash(s::String, d::UInt32) = fnv_hash(codeunits(s), d)
 
 function jenkins_one_at_a_time_hash(key, length)
     i = 1
