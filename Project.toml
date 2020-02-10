@@ -3,7 +3,12 @@ uuid = "33dc01b2-0ff1-4271-8670-ed883dd4b55b"
 authors = ["Andrey Oskin"]
 version = "0.0.1"
 
+[deps]
+Dictionaries = "85a47980-9c8c-11e8-2b9f-f7ca1fa99fb4"
+MurmurHash3 = "b10b62ed-fbae-5ea5-b934-abaf0477b71d"
+
 [compat]
+MurmurHash3 = "1"
 julia = "1"
 
 [extras]
