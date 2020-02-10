@@ -67,28 +67,28 @@ function jenkins(key, initval)
 
     c += UInt32(length(key))
     if len == 11
-        @inbounds c += key[i+10] << 24
+        @inbounds c += (key[i+10] << 24)
     elseif len == 10
-        @inbounds c += key[i+9] << 16
+        @inbounds c += (key[i+9] << 16)
     elseif len == 9
-        @inbounds c += key[i+8] << 8
+        @inbounds c += (key[i+8] << 8)
     # the first byte of c is reserved for the length
     elseif len == 8
-        @inbounds b += key[i+7] << 24
+        @inbounds b += (key[i+7] << 24)
     elseif len == 7
-        @inbounds b += key[i+6] << 16
+        @inbounds b += (key[i+6] << 16)
     elseif len == 6
-        @inbounds b += key[i+5] << 8
+        @inbounds b += (key[i+5] << 8)
     elseif len == 5
         @inbounds b += key[i+4]
     elseif len == 4
-        @inbounds a += key[i+3] << 24
+        @inbounds a += (key[i+3] << 24)
     elseif len == 3
-        @inbounds a += key[i+2] << 16
+        @inbounds a += (key[i+2] << 16)
     elseif len == 2
-        @inbounds a += key[i+1] << 8
+        @inbounds a += (key[i+1] << 8)
     elseif len == 1
-        @inbounds a += key[i]
+        @inbounds a += UInt32(key[i])
     # case 0: nothing left to add
     end
 
