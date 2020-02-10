@@ -133,7 +133,7 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
     end
 
     for key in keys(dict)
-        idx = mmhash(key, 0 % UInt32) & szmask + 1
+        idx = (mmhash(key, 0 % UInt32) & szmask) % Int + 1
         push!(buckets[idx], key)
     end
 
@@ -146,13 +146,13 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
         bucket = buckets[b]
         length(bucket) <= 1 && break
 
+        resize!(slots, length(bucket))
         d = 1 % UInt32
         item = 1
 
         # Repeatedly try different values of d until we find a hash function
         # that places all items in the bucket into free slots
         while item <= length(bucket)
-            # slot = mmhash(bucket[item], d) & szmask + 1
             slot = (mmhash(bucket[item], 0%UInt32) >> d) & szmask + 1
             slot == 1 && throw(KeyError(bucket[item]))
             if keyset[slot] || (slot in slots)
@@ -180,15 +180,15 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
     for b2 in b:sz
         bucket = buckets[b2]
         isempty(bucket) && break
-        bucket = first(bucket)
+        key = first(bucket)
         while keyset[idx]
             idx += 1
         end
 
         # why we calculate it second time?? It makes no sense at all
-        G[mmhash(bucket, 0 % UInt32) & szmask + 1] = -idx
-        values[idx] = dict[bucket]
-        ks[idx] = bucket
+        G[mmhash(key, 0 % UInt32) & szmask + 1] = -idx
+        values[idx] = dict[key]
+        ks[idx] = key
         idx += 1
     end
 
