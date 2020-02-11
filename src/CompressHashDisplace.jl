@@ -15,10 +15,12 @@ end
 
 optimal_size(dict) = 1 << (leading_zeros(0) - leading_zeros(length(dict)))
 
-# Computes a perfect hash table using the given python dictionary. It
-# returns a tuple (G, V). G and V are both arrays. G contains the intermediate
-# table of values needed to compute the index of the value in V. V contains the
-# values of the dictionary.
+"""
+    FrozenUnsafeDict(dict)
+
+Computes a perfect hash table using given `dict`. `FrozenUnsafeDict` do not hold key values,
+and wouldn't do any verifications during lookup procedure.
+"""
 function FrozenUnsafeDict(dict::Dict{K, V}) where {K, V}
     sz = optimal_size(dict)
     szmask = (sz - 1) % UInt64

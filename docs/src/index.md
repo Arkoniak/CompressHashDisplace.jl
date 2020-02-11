@@ -1,5 +1,8 @@
 # CompressHashDisplace.jl
 
+```@contents
+```
+
 ```@index
 ```
 
