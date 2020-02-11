@@ -6,13 +6,10 @@ os:
 julia:
   - 1.0
   - nightly
-matrix:
+jobs:
   allow_failures:
     - julia: nightly
   fast_finish: true
-notifications:
-  email: false
-jobs:
   include:
     - stage: Documentation
       julia: 1.0
@@ -22,3 +19,5 @@ jobs:
           Pkg.instantiate();
           include("docs/make.jl");'
       after_success: skip
+notifications:
+  email: false
