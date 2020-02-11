@@ -7,9 +7,8 @@ makedocs(;
         "Home" => "index.md",
     ],
     repo="https://github.com/Arkoniak/CompressHashDisplace.jl/blob/{commit}{path}#L{line}",
-    sitename="CompressHashDisplace.jl",
+    sitename="CompressHashDisplace",
     authors="Andrey Oskin",
-    assets=String[],
 )
 
 deploydocs(;

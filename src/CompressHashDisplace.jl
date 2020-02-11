@@ -1,7 +1,6 @@
 module CompressHashDisplace
 
 using MurmurHash3
-include("hash.jl")
 export FrozenUnsafeDict, FrozenDict
 
 mmhash(str::String) = last(mmhash128_a(sizeof(str), pointer(str), 0%UInt32))
