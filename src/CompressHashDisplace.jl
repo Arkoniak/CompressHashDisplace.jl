@@ -107,11 +107,11 @@ function Base.:getindex(FD::FrozenUnsafeDict{V}, key) where V
     end
 end
 
-struct FrozenDict{K, V}
+struct FrozenDict{K, V} <: AbstractDict{K, V}
     ks::Vector{K}
     G::Vector{Int}
     values::Vector{V}
-    sz::UInt64
+    sz::Int
 end
 
 # Computes a perfect hash table using the given python dictionary. It
@@ -193,12 +193,12 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
         idx += 1
     end
 
-    return FrozenDict{K, V}(ks, G, values, sz)
+    return FrozenDict{K, V}(ks, G, values, length(dict))
 end
 
 # Look up a value in the hash table, defined by G and V.
 function Base.:getindex(FD::FrozenDict{K, V}, key) where {K, V}
-    szmask = UInt64(FD.sz - 1)
+    szmask = UInt64(length(FD.ks) - 1)
     idx = mmhash(key, 0%UInt32)
     @inbounds d = FD.G[idx & szmask + 1%UInt32]
     idx = d < 0 ? -d%UInt64 : (idx >> d) & szmask + 1%UInt64
@@ -209,6 +209,18 @@ function Base.:getindex(FD::FrozenDict{K, V}, key) where {K, V}
         throw(KeyError(key))
     end
 end
+
+Base.length(FD::FrozenDict) = FD.sz
+
+function Base.iterate(FD::FrozenDict, state=0)
+    for i in (state + 1):length(FD)
+        if isassigned(FD.ks, i)
+            return (FD.ks[i], FD.values[i]), i
+        end
+    end
+    return nothing
+end
+
 
 # function FrozenDict(dict::Dict{K, V}) where {K, V}
 #     sz = optimal_size(dict)
