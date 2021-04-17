@@ -2,13 +2,18 @@ using Documenter, CompressHashDisplace
 
 makedocs(;
     modules=[CompressHashDisplace],
-    format=Documenter.HTML(),
+    authors="Andrey Oskin",
+    repo="https://github.com/Arkoniak/CompressHashDisplace.jl/blob/{commit}{path}#L{line}",
+    sitename="CompressHashDisplace.jl",
+    format=Documenter.HTML(
+        prettyurls=get(ENV, "CI", "false") == "true",
+        canonical="https://Arkoniak.github.io/CompressHashDisplace.jl",
+        siteurl="https://github.com/Arkoniak/CompressHashDisplace.jl",
+        assets=String[],
+    ),
     pages=[
         "Home" => "index.md",
     ],
-    repo="https://github.com/Arkoniak/CompressHashDisplace.jl/blob/{commit}{path}#L{line}",
-    sitename="CompressHashDisplace",
-    authors="Andrey Oskin",
 )
 
 deploydocs(;

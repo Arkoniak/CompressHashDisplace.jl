@@ -1,8 +1,8 @@
 # CompressHashDisplace
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://Arkoniak.github.io/CompressHashDisplace.jl/stable)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://Arkoniak.github.io/CompressHashDisplace.jl/dev)
-[![Build Status](https://travis-ci.com/Arkoniak/CompressHashDisplace.jl.svg?branch=master)](https://travis-ci.com/Arkoniak/CompressHashDisplace.jl)
+|                                                                                                  **Documentation**                                                                                                  |                                                                                                                          **Build Status**                                                                                                                          |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://Arkoniak.github.io/CompressHashDisplace.jl/stable)[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://Arkoniak.github.io/CompressHashDisplace.jl/dev)  |   [![Build](https://github.com/Arkoniak/CompressHashDisplace.jl/workflows/CI/badge.svg)](https://github.com/Arkoniak/CompressHashDisplace.jl/actions)[![Coverage](https://codecov.io/gh/Arkoniak/CompressHashDisplace.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/Arkoniak/CompressHashDisplace.jl)   |
 
 This package creates read-only dictionaries with fast access speed.
 
