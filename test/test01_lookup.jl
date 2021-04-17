@@ -15,7 +15,7 @@ using Test
 end
 
 @testset "Nonstring Lookup" begin
-    dict = Dict{String, Int}(5 => 1, 6 => 2)
+    dict = Dict{Int, Int}(5 => 1, 6 => 2)
     fd = FrozenDict(dict)
     @test fd[5] == 1
     @test fd[6] == 2

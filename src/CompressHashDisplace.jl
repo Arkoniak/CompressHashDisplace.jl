@@ -6,7 +6,7 @@ export FrozenUnsafeDict, FrozenDict
 mmhash(str::String) = last(mmhash128_a(sizeof(str), pointer(str), 0%UInt32))
 mmhash(str::String, d::UInt32) = last(mmhash128_a(sizeof(str), pointer(str), d))
 mmhash(key) = hash(key)
-mmhash(key, d) = hash(key, d)
+mmhash(key, d) = hash(key, UInt64(d))
 
 struct FrozenUnsafeDict{V}
     G::Vector{Int}
