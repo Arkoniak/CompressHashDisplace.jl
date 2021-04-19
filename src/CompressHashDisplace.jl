@@ -113,7 +113,9 @@ struct FrozenDict{K, V} <: AbstractDict{K, V}
     ks::Vector{K}
     G::Vector{Int}
     values::Vector{V}
+    mask::BitArray{1}
     sz::UInt64
+    length::Int
 end
 
 """
@@ -158,13 +160,12 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
         # that places all items in the bucket into free slots
         while item <= length(bucket)
             slot = (mmhash(bucket[item], 0%UInt32) >> d) & szmask + 1
-            slot == 1 && throw(KeyError(bucket[item]))
+            slot == 0 && throw(KeyError(bucket[item]))
             if keyset[slot] || (slot in slots)
                 d += 1 % UInt32
                 item = 1
-                empty!(slots)
             else
-                push!(slots, slot)
+               slots[item] = slot
                 item += 1
             end
         end
@@ -176,7 +177,6 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
             keyset[slots[i]] = true
             ks[slots[i]] = bucket[i]
         end
-        empty!(slots)
         b += 1
     end
 
@@ -193,10 +193,11 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
         G[mmhash(key, 0 % UInt32) & szmask + 1] = -idx
         values[idx] = dict[key]
         ks[idx] = key
+        keyset[idx] = true
         idx += 1
     end
 
-    return FrozenDict{K, V}(ks, G, values, sz)
+    return FrozenDict{K, V}(ks, G, values, keyset, sz, length(dict))
 end
 
 # Look up a value in the hash table, defined by G and V.
@@ -213,11 +214,11 @@ function Base.:getindex(FD::FrozenDict{K, V}, key) where {K, V}
     end
 end
 
-Base.length(FD::FrozenDict) = FD.sz
+Base.length(FD::FrozenDict) = FD.length
 
 function Base.iterate(FD::FrozenDict, state=0)
-    for i in (state + 1):length(FD)
-        if isassigned(FD.ks, i)
+    for i in (state + 1):FD.sz
+        if FD.mask[i]
             return (FD.ks[i], FD.values[i]), i
         end
     end
