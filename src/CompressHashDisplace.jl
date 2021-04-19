@@ -113,7 +113,7 @@ struct FrozenDict{K, V} <: AbstractDict{K, V}
     ks::Vector{K}
     G::Vector{Int}
     values::Vector{V}
-    sz::UInt64
+    sz::Int
 end
 
 """
@@ -196,12 +196,12 @@ function FrozenDict(dict::Dict{K, V}) where {K, V}
         idx += 1
     end
 
-    return FrozenDict{K, V}(ks, G, values, sz)
+    return FrozenDict{K, V}(ks, G, values, length(dict))
 end
 
 # Look up a value in the hash table, defined by G and V.
 function Base.:getindex(FD::FrozenDict{K, V}, key) where {K, V}
-    szmask = UInt64(FD.sz - 1)
+    szmask = UInt64(length(FD.ks) - 1)
     idx = mmhash(key, 0%UInt32)
     @inbounds d = FD.G[idx & szmask + 1%UInt32]
     idx = d < 0 ? -d%UInt64 : (idx >> d) & szmask + 1%UInt64
